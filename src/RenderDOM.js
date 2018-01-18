@@ -42,7 +42,7 @@ export default class RenderDOM {
       });
 
       children.forEach(child => {
-        const childEl = RenderDOM.render(child);
+        const childEl = RenderDOM.renderDOM(child);
         elem.appendChild(childEl);
       });
     } catch (error) {
@@ -75,7 +75,7 @@ export default class RenderDOM {
   static renderArray(child) {
     const elem = document.createDocumentFragment();
     child.forEach(subChild => {
-      const subElem = RenderDOM.render(subChild);
+      const subElem = RenderDOM.renderDOM(subChild);
       elem.appendChild(subElem);
     });
     return elem;
