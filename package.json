@@ -1,0 +1,36 @@
+{
+  "name": "virtual-dom-base",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**",
+    "build": "webpack",
+    "example": "webpack --config=./example/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcc19941214/virtual-dom-base.git"
+  },
+  "author": "conan <lcc19941214@gmail.com> (https://github.com/lcc19941214/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lcc19941214/virtual-dom-base/issues"
+  },
+  "homepage": "https://github.com/lcc19941214/virtual-dom-base#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.15.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack": "^3.10.0"
+  }
+}
