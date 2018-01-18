@@ -1,13 +1,13 @@
 const path = require('path');
 
 const ENTRY = path.join(__dirname, 'src/index.js');
-const OUTPUT = path.join(__dirname, 'output');
+const OUTPUT = path.join(__dirname, 'lib');
 
 module.exports = {
   entry: ENTRY,
   output: {
     path: OUTPUT,
-    filename: 'bundle.js'
+    filename: 'virtual-dom-base.js'
   },
   module: {
     rules: [
