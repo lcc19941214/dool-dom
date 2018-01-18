@@ -51,7 +51,7 @@ export default class RenderDOM {
     return elem;
   }
 
-  static renderWithTypeCheck(element = {}) {
+  static renderWithTypeCheck(element) {
     let elem;
     if (utils.isArray(element)) {
       elem = RenderDOM.renderArray(element);
