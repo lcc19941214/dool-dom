@@ -9,9 +9,10 @@ export default class RenderDOM {
    * @param {[HTMLElement]} DOMNode
    */
   static render(element, DOMNode) {
-    const elem = RenderDOM.render(element);
+    const elem = RenderDOM.renderDOM(element);
     const DOMElement = utils.isElement(DOMNode) ? DOMNode : document.body;
     DOMElement.appendChild(elem);
+    return elem;
   }
 
   /**

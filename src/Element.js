@@ -1,4 +1,6 @@
-import { renderDOM } from './RenderDOM';
+import RenderDOM from './RenderDOM';
+
+const { renderDOM } = RenderDOM;
 
 export default class Element {
   static createElement(...args) {
