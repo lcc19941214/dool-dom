@@ -28,7 +28,9 @@ module.exports = {
   entry: ENTRY,
   output: {
     path: OUTPUT,
-    filename: filename`${argv.uglify}`
+    filename: filename`${argv.uglify}`,
+    library: 'virtualDOMBase',
+    libraryTarget: 'umd'
   },
   plugins,
   module: {
