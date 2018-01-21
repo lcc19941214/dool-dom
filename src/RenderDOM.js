@@ -34,7 +34,7 @@ export default class RenderDOM {
   static renderElement(element = {}) {
     const { tagName = '' } = element;
     const props = element.props || {};
-    const children = elem.children || [];
+    const children = element.children || [];
     let elem;
     try {
       elem = document.createElement(tagName);
