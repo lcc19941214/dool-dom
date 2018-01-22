@@ -29,7 +29,7 @@ module.exports = {
   output: {
     path: OUTPUT,
     filename: filename`${argv.uglify}`,
-    library: 'Dool-DOM',
+    library: 'Dool',
     libraryTarget: 'umd'
   },
   plugins,

@@ -8,10 +8,16 @@ const TEMPLATE_ENTRY = path.join(ENTRY, 'template.html');
 const TEMPLATE_FILENAME = path.join(OUTPUT, 'index.html');
 
 module.exports = {
+  devServer: {
+    contentBase: ENTRY,
+    compress: true,
+    port: 9000
+  },
+  devtool: 'source-map',
   entry: BUNDLE_FILENAME,
   output: {
     path: OUTPUT,
-    filename: 'example.output.js'
+    filename: 'bundle.js'
   },
   plugins: [
     new HtmlWebpackPlugin({

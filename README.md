@@ -44,7 +44,7 @@ const root = (
 
 | Type             | Result                           |
 | ---------------- | -------------------------------- |
-| Element instance | Element(HTMLElement)             |
+| Element instance | Element(DOMElement)             |
 | String           | TextNode                         |
 | Number           | TextNode                         |
 | Undefined        | Comment(`<!-- empty node -->`)   |
