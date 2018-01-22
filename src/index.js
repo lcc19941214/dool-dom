@@ -1,4 +1,5 @@
-import Element from './Element';
-import RenderDOM from './RenderDOM';
+import Element from './element';
+import RenderDOM from './renderDOM';
+import Component from './component';
 
-export { Element, RenderDOM };
+export { Component, Element, RenderDOM };
