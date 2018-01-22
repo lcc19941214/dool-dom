@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ENTRY = path.join(__dirname, 'src/index.js');
 const OUTPUT = path.join(__dirname, 'lib');
 const filename = (strings, ...values) => {
-  const name = 'virtual-dom-base';
+  const name = 'dool-dom';
   const [uglify] = values;
   const ext = 'js';
   return [name, uglify ? 'min' : '', ext].filter(v => v).join('.');
@@ -29,7 +29,7 @@ module.exports = {
   output: {
     path: OUTPUT,
     filename: filename`${argv.uglify}`,
-    library: 'virtualDOMBase',
+    library: 'Dool-DOM',
     libraryTarget: 'umd'
   },
   plugins,

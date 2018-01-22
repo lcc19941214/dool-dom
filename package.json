@@ -1,8 +1,8 @@
 {
-  "name": "virtual-dom-base",
-  "version": "0.1.6",
+  "name": "dool-dom",
+  "version": "0.2.0",
   "description": "",
-  "main": "./lib/virtual-dom-base.js",
+  "main": "./lib/dool-dom.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lcc19941214/virtual-dom-base.git"
+    "url": "git+https://github.com/lcc19941214/dool-dom.git"
   },
   "author": "conan <lcc19941214@gmail.com> (https://github.com/lcc19941214/)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lcc19941214/virtual-dom-base/issues"
+    "url": "https://github.com/lcc19941214/dool-dom/issues"
   },
-  "homepage": "https://github.com/lcc19941214/virtual-dom-base#readme",
+  "homepage": "https://github.com/lcc19941214/dool-dom#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

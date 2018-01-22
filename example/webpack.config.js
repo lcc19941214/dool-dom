@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Virtual DOM Base Example',
+      title: 'Dool-DOM Example',
       template: TEMPLATE_ENTRY,
       filename: TEMPLATE_FILENAME,
       inject: true

@@ -1,10 +1,10 @@
-# Virtual DOM Base
+# Dool-DOM
 
-> Virtual DOM Base is a basic implementation of DOM manipulation lib.
+> Dool-DOM is a basic implementation of DOM manipulation lib.
 
 ### Intro
 
-With `Element` and `RenderDOM` offered by **Virtual DOM Base**, you can easily manipulate your DOM structure.
+With `Element` and `RenderDOM` offered by **Dool-DOM**, you can easily manipulate your DOM structure.
 
 ### Usage
 
@@ -13,13 +13,13 @@ With `Element` and `RenderDOM` offered by **Virtual DOM Base**, you can easily m
 **Basic Usage**
 
 ```javascript
-import { Element } from 'virtual-dom-base';
+import { Element } from 'dool-dom';
 
 const root = Element.createElement('div', {
   id: 'root',
-  Element.createElement('h1', null, 'Hello Virtual DOM Base!'),
+  Element.createElement('h1', null, 'Hello Dool-DOM!'),
   Element.createElement('blockquote', null,
-  	Element.createElement('code', null, 'Virtual DOM Base'),
+    Element.createElement('code', null, 'Dool-DOM'),
     ' is a basic implementation of DOM manipulation lib.'
   ),
 });
@@ -28,13 +28,13 @@ const root = Element.createElement('div', {
 **With JSX**
 
 ```jsx
-import { Element } from 'virtual-dom-base';
+import { Element } from 'dool-dom';
 
 const root = (
   <div id="root">
-    <h1>Hello Virtual DOM Base!</h1>
+    <h1>Hello Dool-DOM!</h1>
     <blockquote>
-      <code>Virtual DOM Base</code> is a basic implementation of DOM manipulation lib.
+      <code>Dool-DOM</code> is a basic implementation of DOM manipulation lib.
     </blockquote>
   </div>
 );
@@ -56,7 +56,7 @@ const root = (
 #### example
 
 ```jsx
-import { Element } from 'virtual-dom-base';
+import { Element } from 'dool-dom';
 
 const root = (
   <div>
@@ -65,7 +65,7 @@ const root = (
     7873632
     {undefined}
     {null}
-    {{ name: 'virtual dom base' }}
+    {{ name: 'Dool-DOM' }}
     {[
       <div className="child">Amy</div>,
       <div className="child">Bob</div>,
