@@ -1,6 +1,6 @@
 import utils from './utils';
 import Element from './element';
-// import Property from './property';
+import { setValueForProperty, setValueForInlineStyle } from './property';
 import { checkTypeError } from './helper/logTipsHelper';
 
 /**
@@ -27,13 +27,32 @@ export function render(element, mountPoint) {
  * @return {DOMElement}
  */
 export function createDOM(element) {
-  let elem;
   if (element instanceof Element) {
-    elem = createElement(element);
-  } else {
-    elem = createElementWithTypeCheck(element);
+    return createElement(element);
   }
-  return elem;
+
+  if (utils.isArray(element)) {
+    return createDocumentFragment(element);
+  }
+
+  if (utils.isString(element) || (!Number.isNaN(element) && utils.isNumber(element))) {
+    return createTextNode(element);
+  }
+
+  if (utils.isNull(element) || utils.isUndef(element)) {
+    return createEmptyNode();
+  }
+
+  if (utils.isObject(element)) {
+    checkTypeError(
+      'element',
+      'String, Number, Array, undefined, null or an instance of Element',
+      element
+    );
+    return createUnknownNode();
+  }
+
+  return createUnknownNode();
 }
 
 function createElement(element = {}) {
@@ -51,12 +70,11 @@ function createElement(element = {}) {
       elem = document.createElement(tagName);
     }
 
-    // Property.set(elem, props);
-
     Object.keys(props).forEach(name => {
-      const value = props[name];
-      elem.setAttribute(name, value);
+      setValueForProperty(elem, name, props[name]);
     });
+
+    setValueForInlineStyle(elem, props['style']);
 
     children.forEach(child => {
       const childEl = createDOM(child);
@@ -64,23 +82,6 @@ function createElement(element = {}) {
     });
   } catch (error) {
     console.log(error);
-    elem = createUnknownNode();
-  }
-  return elem;
-}
-
-function createElementWithTypeCheck(element) {
-  let elem;
-  if (utils.isArray(element)) {
-    elem = createDocumentFragment(element);
-  } else if (utils.isString(element) || (!Number.isNaN(element) && utils.isNumber(element))) {
-    elem = createTextNode(element);
-  } else if (utils.isNull(element) || utils.isUndef(element)) {
-    elem = createEmptyNode();
-  } else if (utils.isObject(element)) {
-    checkTypeError('element', 'String, Number, Array, undefined, null or an instance of Element', element);
-    elem = createUnknownNode();
-  } else {
     elem = createUnknownNode();
   }
   return elem;

@@ -1,4 +1,12 @@
-import { RenderDOM, Element } from '../src/';
+/* eslint-disable react/no-unescaped-entities*/
+import * as Dool from '../src/';
+if (_DEV_) {
+  import('./dev');
+}
+
+window.Dool = Dool;
+
+const { RenderDOM, Element } = Dool;
 
 var root = (
   <div>
@@ -59,7 +67,7 @@ var root = (
       <tbody>
         <tr>
           <td>Element instance</td>
-          <td>Element(HTMLElement)</td>
+          <td>Element(DOMElement)</td>
         </tr>
         <tr>
           <td>String</td>
