@@ -3,6 +3,7 @@ import Element from './element';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { checkTypeError } from './helper/logTipsHelper';
 
+
 /**
  * render Element instance to real DOM node, and attach it
  * to given DOMNode
