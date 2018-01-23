@@ -1,5 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+const _DEV_ = process.env.NODE_ENV === 'dev';
 
 const ENTRY = path.join(__dirname);
 const OUTPUT = path.join(__dirname);
@@ -25,6 +28,9 @@ module.exports = {
       template: TEMPLATE_ENTRY,
       filename: TEMPLATE_FILENAME,
       inject: true
+    }),
+    new webpack.DefinePlugin({
+      _DEV_
     })
   ],
   module: {
