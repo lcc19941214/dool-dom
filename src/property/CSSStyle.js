@@ -5,9 +5,17 @@ export function shouldIgnoreStyle(name, value) {
     case 'function':
     case 'symbol':
     case 'object':
-    case 'undefined':
       return true;
     default:
+  }
+
+  return false;
+}
+
+// eslint-disable-next-line no-unused-vars
+export function shouldRemoveStyle(name = '', value, propertyInfo) {
+  if (value === null || utils.isUndef(value)) {
+    return true;
   }
 
   return false;

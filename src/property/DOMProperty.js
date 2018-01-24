@@ -1,5 +1,6 @@
-// propertyInfo type
+import utils from '../utils';
 
+// propertyInfo type
 // reserved properties that will be ignored when set property value
 export const RESERVED = 0;
 
@@ -33,6 +34,15 @@ export function shouldIgnoreProperty(name = '', value, propertyInfo) {
 
   // event handler
   if (name.length > 2 && EVENT_HANDLER_PROP.test(name)) {
+    return true;
+  }
+
+  return false;
+}
+
+// eslint-disable-next-line no-unused-vars
+export function shouldRemoveProperty(name = '', value, propertyInfo) {
+  if (value === null || utils.isUndef(value)) {
     return true;
   }
 

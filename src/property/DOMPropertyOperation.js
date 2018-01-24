@@ -3,9 +3,10 @@ import {
   DIFFERENT_NAME_PROPS_MAP,
   getPropertyInfo,
   shouldIgnoreProperty,
+  shouldRemoveProperty,
   shouldSetValueForPropertyWithWarning
 } from './DOMProperty';
-import { shouldIgnoreStyle, getStyleInfo } from './CSSStyle';
+import { shouldIgnoreStyle, shouldRemoveStyle, getStyleInfo } from './CSSStyle';
 
 /**
  * @param {DOMElement} elem
@@ -18,6 +19,7 @@ export function setValueForProperty(elem, name, value) {
   if (!propertyInfo) return;
 
   if (shouldIgnoreProperty(name, value, propertyInfo)) return;
+  if (shouldRemoveProperty(name, value, propertyInfo)) value = null;
 
   const { propertyName, type, useProperty } = propertyInfo;
 
@@ -27,16 +29,26 @@ export function setValueForProperty(elem, name, value) {
     }
   }
 
+  // properties
   if (useProperty) {
-    elem[propertyName] = value;
+    if (value === null) {
+      elem[propertyName] = false;
+    } else {
+      elem[propertyName] = value;
+    }
+    return;
+  }
+
+  // attributes
+  if (value === null) {
+    elem.removeAttribute(propertyName);
   } else {
     if (type === BOOLEAN) {
       value = '';
     } else {
-      // `setAttribute` with objects becomes only `[object]` in IE8/9,
-      // ('' + value) makes it output the correct toString()-value.
       value = '' + value;
     }
+
     elem.setAttribute(propertyName, value);
   }
 }
@@ -49,6 +61,7 @@ export function setValueForInlineStyle(elem, style = {}) {
 
     if (!propertyInfo) return;
     if (shouldIgnoreStyle(name, value, propertyInfo)) return;
+    if (shouldRemoveStyle(name, value, propertyInfo)) return;
 
     const { propertyName } = propertyInfo;
     styleStr += `${propertyName}: ${value}; `;
