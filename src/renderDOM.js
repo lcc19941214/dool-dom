@@ -1,4 +1,4 @@
-import utils from './utils';
+import _ from './utils';
 import Element from './element';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { checkTypeError } from './helper/logTipsHelper';
@@ -8,13 +8,13 @@ import { checkTypeError } from './helper/logTipsHelper';
  * render Element instance to real DOM node, and attach it
  * to given DOMNode
  *
- * @param {String|Number|Array|undefined|null|{DoolElement: Element}} element
+ * @param {*} element
  * @param {DOMElement} mountPoint
  * @return {DOMElement}
  */
 export function render(element, mountPoint) {
   const elem = createDOM(element);
-  const DOMElement = utils.isElement(mountPoint) ? mountPoint : document.body;
+  const DOMElement = _.isElement(mountPoint) ? mountPoint : document.body;
   if (elem) DOMElement.appendChild(elem);
   return elem;
 }
@@ -24,7 +24,7 @@ export function render(element, mountPoint) {
  * this method receives params of any types and transform them
  * to DOMElement or Comment
  *
- * @param {String|Number|Array|undefined|null|{DoolElement: Element}} element
+ * @param {*} element
  * @return {DOMElement}
  */
 export function createDOM(element) {
@@ -32,19 +32,19 @@ export function createDOM(element) {
     return createElement(element);
   }
 
-  if (utils.isArray(element)) {
+  if (_.isArray(element)) {
     return createDocumentFragment(element);
   }
 
-  if (utils.isString(element) || (!Number.isNaN(element) && utils.isNumber(element))) {
+  if (_.isString(element) || (!Number.isNaN(element) && _.isNumber(element))) {
     return createTextNode(element);
   }
 
-  if (utils.isNull(element) || utils.isUndef(element)) {
+  if (_.isNull(element) || _.isUndef(element)) {
     return createEmptyNode();
   }
 
-  if (utils.isObject(element)) {
+  if (_.isObject(element)) {
     checkTypeError(
       'element',
       'String, Number, Array, undefined, null or an instance of Element',

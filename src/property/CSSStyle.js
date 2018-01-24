@@ -1,4 +1,4 @@
-import utils from '../utils';
+import _ from '../utils';
 
 export function shouldIgnoreStyle(name, value) {
   switch (typeof value) {
@@ -14,7 +14,7 @@ export function shouldIgnoreStyle(name, value) {
 
 // eslint-disable-next-line no-unused-vars
 export function shouldRemoveStyle(name = '', value, propertyInfo) {
-  if (value === null || utils.isUndef(value)) {
+  if (value === null || _.isUndef(value)) {
     return true;
   }
 
@@ -22,14 +22,14 @@ export function shouldRemoveStyle(name = '', value, propertyInfo) {
 }
 
 /**
- * @param {String} name
- * @param {Boolean} allowDefault
- * @return {PropertyInfo} PropertyInfo
+ * @param {string} name
+ * @param {boolean} allowDefault
+ * @return {.PropertyInfo} PropertyInfo
  */
 export function getStyleInfo(name = '', allowDefault = true) {
   return (
     styles[name] ||
-    (allowDefault ? new PropertyInfo(name, utils.transformUpperWithHyphen(name)) : null)
+    (allowDefault ? new PropertyInfo(name, _.transformUpperWithHyphen(name)) : null)
   );
 }
 
@@ -37,9 +37,9 @@ const styles = {};
 
 class PropertyInfo {
   /**
-   * @param {String} name
-   * @param {String} propertyName
-   * @param {Number} type
+   * @param {string} name
+   * @param {string} propertyName
+   * @param {number} type
    */
   constructor(name, propertyName, type) {
     this.name = name;

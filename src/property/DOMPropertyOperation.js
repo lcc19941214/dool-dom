@@ -10,7 +10,7 @@ import { shouldIgnoreStyle, shouldRemoveStyle, getStyleInfo } from './CSSStyle';
 
 /**
  * @param {DOMElement} elem
- * @param {String} name
+ * @param {string} name
  * @param {*} value
  */
 export function setValueForProperty(elem, name, value) {

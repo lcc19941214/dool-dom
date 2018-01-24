@@ -1,11 +1,11 @@
 const chore = {
   /**
-   * e.g. backgroundColor -> background-color
+   * @example backgroundColor => background-color
    */
   transformUpperWithHyphen: (str = '') =>
     str.replace(/[A-Z]/g, (...arg) => `-${arg[0].toLowerCase()}`),
   /**
-   * e.g. background-color -> backgroundColor
+   * @example background-color => backgroundColor
    */
   transformHyphenWithUpper: (str = '') =>
     str.replace(/-[a-z]/g, (...arg) => arg[0].slice(1).toUpperCase())

@@ -1,10 +1,9 @@
 /**
  * return error as '[key] should be [accept], but got [target]'
  * 
- * @param {String} key - target name
- * @param {String} accept - accept types
+ * @param {string} key - target name
+ * @param {string} accept - accept types
  * @param {any} target
- * @return {String}
  */
 export const checkTypeError = (key, accept, target) => {
   console.error('%s should be %s, but got %s', key, accept, Object.prototype.toString.call(target));

@@ -1,4 +1,4 @@
-import utils from '../utils';
+import _ from '../utils';
 
 // propertyInfo type
 // reserved properties that will be ignored when set property value
@@ -42,7 +42,7 @@ export function shouldIgnoreProperty(name = '', value, propertyInfo) {
 
 // eslint-disable-next-line no-unused-vars
 export function shouldRemoveProperty(name = '', value, propertyInfo) {
-  if (value === null || utils.isUndef(value)) {
+  if (value === null || _.isUndef(value)) {
     return true;
   }
 
@@ -54,10 +54,10 @@ export function shouldSetValueForPropertyWithWarning(name) {
 }
 
 /**
- * @param {String} name
- * @param {Boolean} allowDefault - as Dool does not contains all the HTML properties
- *  like react does(see https://github.com/facebook/react/blob/master/packages/react-dom/src/shared/DOMProperty.js#L147),
- *  use this param to make a default property info
+ * @param {string} name
+ * @param {boolean} allowDefault - as Dool does not contains all the HTML properties
+ *  like react does, use this param to make a default property info
+ *  @see https://github.com/facebook/react/blob/master/packages/react-dom/src/shared/DOMProperty.js#L147
  * @return {PropertyInfo} PropertyInfo
  */
 export function getPropertyInfo(name = '', allowDefault = true) {
@@ -71,10 +71,10 @@ const properties = {};
 
 class PropertyInfo {
   /**
-   * @param {String} name
-   * @param {String} propertyName
-   * @param {Number} type
-   * @param {Boolean} useProperty
+   * @param {string} name
+   * @param {string} propertyName
+   * @param {number} type
+   * @param {boolean} useProperty
    */
   constructor(name, propertyName, type, useProperty) {
     this.name = name;
