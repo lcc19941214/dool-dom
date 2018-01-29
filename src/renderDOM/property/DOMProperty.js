@@ -1,4 +1,4 @@
-import _ from '../utils';
+import _ from '../../utils';
 
 // propertyInfo type
 // reserved properties that will be ignored when set property value
@@ -85,7 +85,7 @@ class PropertyInfo {
 }
 
 // reserved properties
-['style'].forEach(name => {
+['style', 'key'].forEach(name => {
   properties[name] = new PropertyInfo(name, name, RESERVED, false);
 });
 

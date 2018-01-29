@@ -1,7 +1,7 @@
-import _ from './utils';
-import Element from './element';
+import _ from '../utils';
+import Element from '../element';
 import { setValueForProperty, setValueForInlineStyle } from './property';
-import { checkTypeError } from './helper/logTipsHelper';
+import { checkTypeError } from '../helper/logTipsHelper';
 
 
 /**
