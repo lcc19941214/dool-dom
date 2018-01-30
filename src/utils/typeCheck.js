@@ -1,23 +1,37 @@
+const TYPES = {};
+
+'Boolean Number String Function Array Date RegExp Object Symbol Map Set'
+  .split(' ')
+  .forEach(item => {
+    TYPES[`[object ${item}]`] = item.toLowerCase();
+  });
+
+function type(obj) {
+  return obj == null ? String(obj) : TYPES[Object.prototype.toString.call(obj)] || 'object';
+}
+
 const typeCheck = {
-  isString: str => typeof str === 'string',
+  isString: obj => type(obj) === 'string',
 
-  isNumber: num => typeof num === 'number',
+  isNumber: obj => !isNaN(parseFloat(obj)) && isFinite(obj),
 
-  isArray: arr => {
-    if (Array.isArray) {
-      return Array.isArray(arr);
-    } else {
-      return arr instanceof Array;
-    }
-  },
+  isBoolean: obj => type(obj) === 'boolean',
 
-  isFunc: fn => typeof fn === 'function',
+  isFunction: obj => type(obj) === 'function',
 
-  isNull: val => val === null,
+  isFunc: obj => typeCheck.isFunction(obj),
 
-  isUndef: val => val === undefined,
+  isArray: obj => type(obj) === 'array',
 
-  isObject: obj => !typeCheck.isNull(obj) && typeof obj === 'object',
+  isObject: obj => type(obj) === 'object',
+
+  isRegExp: obj => type(obj) === 'regexp',
+
+  isDate: obj => type(obj) === 'date',
+
+  isNull: obj => type(obj) === 'null',
+
+  isUndef: obj => type(obj) === 'undefined',
 
   isEmptyObject: obj => {
     if (Object.hasOwnProperty('keys')) {
@@ -35,13 +49,23 @@ const typeCheck = {
   isNode: node => {
     return typeCheck.isObject(Node)
       ? node instanceof Node
-      : !!(node && typeCheck.isObject(node) && typeCheck.isNumber(node.nodeType) && typeCheck.isString(node.nodeName));
+      : !!(
+          node &&
+          typeCheck.isObject(node) &&
+          typeCheck.isNumber(node.nodeType) &&
+          typeCheck.isString(node.nodeName)
+        );
   },
 
   isElement: elem => {
     return typeCheck.isObject(HTMLElement)
       ? elem instanceof HTMLElement
-      : !!(elem && typeCheck.isObject(elem) && elem.nodeType === 1 && typeCheck.isString(elem.nodeName));
+      : !!(
+          elem &&
+          typeCheck.isObject(elem) &&
+          elem.nodeType === 1 &&
+          typeCheck.isString(elem.nodeName)
+        );
   }
 };
 
