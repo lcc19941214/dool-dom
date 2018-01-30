@@ -1,42 +1,49 @@
 import _ from '../utils';
 import Element from '../element';
+import { getDefaultKey, setKey } from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
-import { checkTypeError } from '../helper/logTipsHelper';
+import { typeError, checkTypeErrorWithWarning } from '../helper/logTipsHelper';
 
 /**
  * render Element instance to real DOM node, and attach it
  * to given DOMNode
  *
  * @param {*} element
- * @param {DOMElement} mountPoint
- * @return {DOMElement}
+ * @param {HTMLElement} mountPoint
+ * @return {HTMLElement}
  */
 export function render(element, mountPoint) {
-  const elem = createDOM(element);
-  const DOMElement = _.isElement(mountPoint) ? mountPoint : document.body;
-  if (elem) DOMElement.appendChild(elem);
-  return elem;
+  const defaultKey = getDefaultKey();
+  const elem = createDOM(element, defaultKey);
+  const root = _.isElement(mountPoint) ? mountPoint : undefined;
+  if (root) {
+    root.appendChild(elem);
+    return elem;
+  } else {
+    throw new TypeError(typeError('mountPoint', 'an instance of HTMLElement', mountPoint));
+  }
 }
 
 /**
  * render Element instance to real DOM node.
  * this method receives params of any types and transform them
- * to DOMElement or Comment
+ * to HTMLElement or Comment
  *
  * @param {*} element
- * @return {DOMElement}
+ * @param {string|number} defaultKey
+ * @return {HTMLElement}
  */
-export function createDOM(element) {
+export function createDOM(element, defaultKey = getDefaultKey) {
   if (element instanceof Element) {
-    return createElement(element);
+    return createElement(element, defaultKey);
   }
 
   if (_.isArray(element)) {
-    return createDocumentFragment(element);
+    return createDocumentFragment(element, defaultKey);
   }
 
   if (_.isString(element) || _.isNumber(element)) {
-    return createTextNode(element);
+    return createTextNode(element, defaultKey);
   }
 
   if (_.isNull(element) || _.isUndef(element)) {
@@ -44,7 +51,7 @@ export function createDOM(element) {
   }
 
   if (_.isObject(element)) {
-    checkTypeError(
+    checkTypeErrorWithWarning(
       'element',
       'String, Number, Array, undefined, null or an instance of Element',
       element
@@ -55,7 +62,7 @@ export function createDOM(element) {
   return createUnknownNode();
 }
 
-function createElement(element = {}) {
+function createElement(element = {}, defaultKey) {
   const { tagName = '', props = {} } = element;
   const children = element.children || [];
   let elem;
@@ -70,34 +77,45 @@ function createElement(element = {}) {
       elem = document.createElement(tagName);
     }
 
+    // set key
+    const { key = defaultKey } = props;
+    setKey(elem, key);
+
+    // set props
     Object.keys(props).forEach(name => {
       setValueForProperty(elem, name, props[name]);
     });
 
+    // set style
     setValueForInlineStyle(elem, props['style']);
 
-    children.forEach(child => {
-      const childEl = createDOM(child);
+    // render children
+    children.forEach((child, idx) => {
+      const childDefaultKey = [key, idx + 1].join('-');
+      const childEl = createDOM(child, childDefaultKey);
       if (childEl) elem.appendChild(childEl);
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     elem = createUnknownNode();
   }
   return elem;
 }
 
-function createDocumentFragment(child) {
+function createDocumentFragment(child, defaultKey) {
   const elem = document.createDocumentFragment();
-  child.forEach(subChild => {
-    const subElem = createDOM(subChild);
+  child.forEach((subChild, idx) => {
+    const childDefaultKey = [defaultKey, idx + 1].join('/');
+    const subElem = createDOM(subChild, childDefaultKey);
     if (subElem) elem.appendChild(subElem);
   });
   return elem;
 }
 
-function createTextNode(text) {
-  return document.createTextNode(text);
+function createTextNode(text, key) {
+  const node = document.createTextNode(text);
+  setKey(node, key);
+  return node;
 }
 
 function createEmptyNode() {

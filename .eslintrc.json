@@ -22,8 +22,6 @@
     "quotes": ["error", "single"],
     "no-console": 1,
     "max-len": [1, { "code": 100 }],
-    "array-element-newline": [1, { "minItems": 3 }],
-    "array-bracket-newline": 1,
     "react/react-in-jsx-scope": 0,
     "react/no-unknown-property": [1, { "ignore": ["class"] }]
   }
