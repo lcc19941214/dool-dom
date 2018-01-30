@@ -13,3 +13,9 @@ export const setKey = (node, key) => {
     node[KEY] = key.toString().trim() || undefined;
   }
 };
+
+export const composeKey = (parentKey = '', key = '', delimiter = '.') => {
+  return [parentKey.toString(), key.toString()].filter(v => v).join(delimiter);
+};
+
+export const decorateArrayElementKey = (key, decorator = '/') => `${decorator}${key}`;

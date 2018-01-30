@@ -1,6 +1,6 @@
 import _ from '../utils';
 import Element from '../element';
-import { getDefaultKey, setKey } from './key';
+import { getDefaultKey, setKey, composeKey, decorateArrayElementKey } from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { typeError, checkTypeErrorWithWarning } from '../helper/logTipsHelper';
 
@@ -33,17 +33,17 @@ export function render(element, mountPoint) {
  * @param {string|number} defaultKey
  * @return {HTMLElement}
  */
-export function createDOM(element, defaultKey = getDefaultKey) {
+export function createDOM(element, defaultKey = getDefaultKey, parentKey = '') {
   if (element instanceof Element) {
-    return createElement(element, defaultKey);
+    return createElement(element, defaultKey, parentKey);
   }
 
   if (_.isArray(element)) {
-    return createDocumentFragment(element, defaultKey);
+    return createDocumentFragment(element, defaultKey, parentKey);
   }
 
   if (_.isString(element) || _.isNumber(element)) {
-    return createTextNode(element, defaultKey);
+    return createTextNode(element, defaultKey, parentKey);
   }
 
   if (_.isNull(element) || _.isUndef(element)) {
@@ -62,7 +62,7 @@ export function createDOM(element, defaultKey = getDefaultKey) {
   return createUnknownNode();
 }
 
-function createElement(element = {}, defaultKey) {
+function createElement(element = {}, defaultKey, parentKey = '') {
   const { tagName = '', props = {} } = element;
   const children = element.children || [];
   let elem;
@@ -79,7 +79,8 @@ function createElement(element = {}, defaultKey) {
 
     // set key
     const { key = defaultKey } = props;
-    setKey(elem, key);
+    const finalKey = composeKey(parentKey, key);
+    setKey(elem, finalKey);
 
     // set props
     Object.keys(props).forEach(name => {
@@ -91,8 +92,7 @@ function createElement(element = {}, defaultKey) {
 
     // render children
     children.forEach((child, idx) => {
-      const childDefaultKey = [key, idx + 1].join('-');
-      const childEl = createDOM(child, childDefaultKey);
+      const childEl = createDOM(child, idx + 1, finalKey);
       if (childEl) elem.appendChild(childEl);
     });
   } catch (error) {
@@ -102,19 +102,23 @@ function createElement(element = {}, defaultKey) {
   return elem;
 }
 
-function createDocumentFragment(child, defaultKey) {
+function createDocumentFragment(child, defaultKey, parentKey) {
   const elem = document.createDocumentFragment();
   child.forEach((subChild, idx) => {
-    const childDefaultKey = [defaultKey, idx + 1].join('/');
-    const subElem = createDOM(subChild, childDefaultKey);
+    const finalParentKey = composeKey(parentKey, defaultKey);
+    const key = idx + 1;
+    const finalKey = decorateArrayElementKey(key);
+
+    const subElem = createDOM(subChild, finalKey, finalParentKey);
     if (subElem) elem.appendChild(subElem);
   });
   return elem;
 }
 
-function createTextNode(text, key) {
+function createTextNode(text, key, parentKey) {
   const node = document.createTextNode(text);
-  setKey(node, key);
+  const finalKey = composeKey(parentKey, key);
+  setKey(node, finalKey);
   return node;
 }
 
