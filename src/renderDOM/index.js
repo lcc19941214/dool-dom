@@ -1,6 +1,6 @@
 import _ from '../utils';
 import Element from '../element';
-import { getDefaultKey, setKey, composeKey, decorateArrayElementKey } from './key';
+import { setKey, composeKey, getElementKeyTree, getDOMElementKeyTree } from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { typeError, checkTypeErrorWithWarning } from '../helper/logTipsHelper';
 
@@ -13,8 +13,7 @@ import { typeError, checkTypeErrorWithWarning } from '../helper/logTipsHelper';
  * @return {HTMLElement}
  */
 export function render(element, mountPoint) {
-  const defaultKey = getDefaultKey();
-  const elem = createDOM(element, defaultKey);
+  const elem = createDOM(element);
   const root = _.isElement(mountPoint) ? mountPoint : undefined;
   if (root) {
     root.appendChild(elem);
@@ -33,17 +32,17 @@ export function render(element, mountPoint) {
  * @param {string|number} defaultKey
  * @return {HTMLElement}
  */
-export function createDOM(element, defaultKey = getDefaultKey, parentKey = '') {
+export function createDOM(element, defaultKey) {
   if (element instanceof Element) {
-    return createElement(element, defaultKey, parentKey);
+    return createElement(element, defaultKey);
   }
 
   if (_.isArray(element)) {
-    return createDocumentFragment(element, defaultKey, parentKey);
+    return createDocumentFragment(element, defaultKey);
   }
 
   if (_.isString(element) || _.isNumber(element)) {
-    return createTextNode(element, defaultKey, parentKey);
+    return createTextNode(element, defaultKey);
   }
 
   if (_.isNull(element) || _.isUndef(element)) {
@@ -62,8 +61,8 @@ export function createDOM(element, defaultKey = getDefaultKey, parentKey = '') {
   return createUnknownNode();
 }
 
-function createElement(element = {}, defaultKey, parentKey = '') {
-  const { tagName = '', props = {} } = element;
+function createElement(element = {}, defaultKey) {
+  const { tagName = '', props = {}, key = defaultKey } = element;
   const children = element.children || [];
   let elem;
   try {
@@ -78,9 +77,7 @@ function createElement(element = {}, defaultKey, parentKey = '') {
     }
 
     // set key
-    const { key = defaultKey } = props;
-    const finalKey = composeKey(parentKey, key);
-    setKey(elem, finalKey);
+    setKey(elem, key);
 
     // set props
     Object.keys(props).forEach(name => {
@@ -92,7 +89,8 @@ function createElement(element = {}, defaultKey, parentKey = '') {
 
     // render children
     children.forEach((child, idx) => {
-      const childEl = createDOM(child, idx + 1, finalKey);
+      const key = idx + 1;
+      const childEl = createDOM(child, key);
       if (childEl) elem.appendChild(childEl);
     });
   } catch (error) {
@@ -102,23 +100,19 @@ function createElement(element = {}, defaultKey, parentKey = '') {
   return elem;
 }
 
-function createDocumentFragment(child, defaultKey, parentKey) {
+function createDocumentFragment(child, parentKey) {
   const elem = document.createDocumentFragment();
   child.forEach((subChild, idx) => {
-    const finalParentKey = composeKey(parentKey, defaultKey);
     const key = idx + 1;
-    const finalKey = decorateArrayElementKey(key);
-
-    const subElem = createDOM(subChild, finalKey, finalParentKey);
+    const subElem = createDOM(subChild, composeKey(parentKey, key));
     if (subElem) elem.appendChild(subElem);
   });
   return elem;
 }
 
-function createTextNode(text, key, parentKey) {
+function createTextNode(text, key) {
   const node = document.createTextNode(text);
-  const finalKey = composeKey(parentKey, key);
-  setKey(node, finalKey);
+  setKey(node, key);
   return node;
 }
 
@@ -134,5 +128,12 @@ const RenderDOM = {
   render,
   createDOM
 };
+
+if (_DEV_) {
+  Object.assign(RenderDOM, {
+    getElementKeyTree,
+    getDOMElementKeyTree
+  });
+}
 
 export default RenderDOM;
