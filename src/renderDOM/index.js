@@ -1,8 +1,9 @@
-import _ from '../utils';
+import _ from '@/utils';
 import Element from '../element';
 import { setKey, composeKey, getElementKeyTree, getDOMElementKeyTree } from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
-import { typeError, checkTypeErrorWithWarning } from '../helper/logTipsHelper';
+import { addEventHandlerForProps } from './eventHandler';
+import { typeError, checkTypeErrorWithWarning } from '@/helper/logTipsHelper';
 
 /**
  * render Element instance to real DOM node, and attach it
@@ -86,6 +87,9 @@ function createElement(element = {}, defaultKey) {
 
     // set style
     setValueForInlineStyle(elem, props['style']);
+
+    // add event listeners
+    addEventHandlerForProps(elem, props);
 
     // render children
     children.forEach((child, idx) => {

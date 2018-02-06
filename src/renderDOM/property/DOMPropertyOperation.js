@@ -7,6 +7,7 @@ import {
   shouldSetValueForPropertyWithWarning
 } from './DOMProperty';
 import { shouldIgnoreStyle, shouldRemoveStyle, getStyleInfo } from './CSSStyle';
+import { checkTypeErrorWithWarning } from '@/helper/logTipsHelper';
 
 /**
  * @param {DOMElement} elem
@@ -53,20 +54,33 @@ export function setValueForProperty(elem, name, value) {
   }
 }
 
-export function setValueForInlineStyle(elem, style = {}) {
-  let styleStr = '';
-  Object.keys(style).forEach(name => {
-    const value = style[name];
-    const propertyInfo = getStyleInfo(name);
+export function setValueForInlineStyle(elem, style) {
+  if (!style) return;
 
-    if (!propertyInfo) return;
-    if (shouldIgnoreStyle(name, value, propertyInfo)) return;
-    if (shouldRemoveStyle(name, value, propertyInfo)) return;
+  try {
+    let styleStr = '';
+    Object.keys(style).forEach(name => {
+      const value = style[name];
+      const propertyInfo = getStyleInfo(name);
 
-    const { propertyName } = propertyInfo;
-    styleStr += `${propertyName}: ${value}; `;
-  });
-  if (styleStr) {
-    elem.setAttribute('style', styleStr.trim());
+      if (!propertyInfo) return;
+      if (shouldIgnoreStyle(name, value, propertyInfo)) return;
+      if (shouldRemoveStyle(name, value, propertyInfo)) return;
+
+      const { propertyName } = propertyInfo;
+      styleStr += `${propertyName}: ${value}; `;
+    });
+    if (styleStr) {
+      elem.setAttribute('style', styleStr.trim());
+    }
+  } catch (e) {
+    if (e instanceof TypeError) {
+      checkTypeErrorWithWarning('style', 'an Object', style);
+    } else {
+      console.error(e);
+    }
   }
 }
+
+// TODO:
+// use elem.style.property = value to update

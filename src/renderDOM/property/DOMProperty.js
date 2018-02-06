@@ -1,4 +1,4 @@
-import _ from '../../utils';
+import _ from '@/utils';
 
 // propertyInfo type
 // reserved properties that will be ignored when set property value
@@ -11,19 +11,8 @@ export const ATTR = 1;
 // property name, despite the value is true, false or any other values
 export const BOOLEAN = 2;
 
-const EVENT_HANDLER_PROP = /^on([A-Z][a-z]+)+$/g;
-
-export const DIFFERENT_NAME_PROPS = [
-  ['acceptCharset', 'accept-charset'],
-  ['className', 'class'],
-  ['htmlFor', 'for'],
-  ['httpEquiv', 'http-equiv']
-];
-const DIFFERENT_NAME_PROPS_MAP = {};
-DIFFERENT_NAME_PROPS.forEach(([prefer, deprecated]) => {
-  DIFFERENT_NAME_PROPS_MAP[deprecated] = prefer;
-});
-export { DIFFERENT_NAME_PROPS_MAP };
+export const EVENT_HANDLER_PROP = /^on([A-Z][a-z]+)+$/g;
+export const isEventHandler = name => name.length > 2 && EVENT_HANDLER_PROP.test(name);
 
 export function shouldIgnoreProperty(name = '', value, propertyInfo) {
   if (propertyInfo) {
@@ -33,7 +22,7 @@ export function shouldIgnoreProperty(name = '', value, propertyInfo) {
   }
 
   // event handler
-  if (name.length > 2 && EVENT_HANDLER_PROP.test(name)) {
+  if (isEventHandler(name)) {
     return true;
   }
 
@@ -89,18 +78,26 @@ class PropertyInfo {
   properties[name] = new PropertyInfo(name, name, RESERVED, false);
 });
 
+export const DIFFERENT_NAME_PROPS = [
+  ['acceptCharset', 'accept-charset'],
+  ['className', 'class'],
+  ['htmlFor', 'for'],
+  ['httpEquiv', 'http-equiv']
+];
+
+const DIFFERENT_NAME_PROPS_MAP = {};
+DIFFERENT_NAME_PROPS.forEach(([prefer, deprecated]) => {
+  DIFFERENT_NAME_PROPS_MAP[deprecated] = prefer;
+});
+export { DIFFERENT_NAME_PROPS_MAP };
+
 // properties may have different name
 DIFFERENT_NAME_PROPS.forEach(([name, propertyName]) => {
   properties[name] = new PropertyInfo(name, propertyName, ATTR, false);
 });
 
 // properties must use DOM property instead of attribute
-[
-'checked',
-'multiple',
-'muted',
-'selected'
-].forEach(name => {
+['checked', 'multiple', 'muted', 'selected'].forEach(name => {
   properties[name] = new PropertyInfo(name, name, BOOLEAN, true);
 });
 

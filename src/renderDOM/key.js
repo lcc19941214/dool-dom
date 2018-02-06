@@ -1,4 +1,4 @@
-import _ from '../utils';
+import _ from '@/utils';
 import Element from '../element';
 
 export const KEY = '$DOOL_KEY';
@@ -17,6 +17,12 @@ export const checkKey = key => (_.isString(key) && key && key.trim()) || _.isNum
 
 export const composeKey = (...args) => args.filter(v => v).join('/');
 
+/**
+ * Check if every child has a key, if not, assign the key with child index.
+ * If the child is in an array, default key will be set with `composeKey`
+ * @param {array} children
+ * @param {string} prefix
+ */
 export const checkAndAssignChildrenKey = (children, ...prefix) => {
   if (!_.isArray(children)) return;
 

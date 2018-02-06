@@ -18,6 +18,9 @@ export const typeError = (key, accept, target) => {
   return str;
 };
 
+/**
+ * @link typeError
+ */
 export const checkTypeErrorWithWarning = (...args) => {
   console.warn(typeError(...args));
 };
