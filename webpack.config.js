@@ -2,7 +2,8 @@ const argv = require('minimist')(process.argv.slice(2));
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const ENTRY = path.join(__dirname, 'src/index.js');
+const ENTRY = path.join(__dirname, 'src');
+
 const OUTPUT = path.join(__dirname, 'lib');
 const filename = (strings, ...values) => {
   const name = 'dool-dom';
@@ -25,7 +26,7 @@ if (argv.uglify) {
 }
 
 module.exports = {
-  entry: ENTRY,
+  entry: path.resolve(ENTRY, 'index.js'),
   output: {
     path: OUTPUT,
     filename: filename`${argv.uglify}`,
@@ -33,6 +34,12 @@ module.exports = {
     libraryTarget: 'umd'
   },
   plugins,
+  resolve: {
+    extensions: ['.js', '.css', '.less'],
+    alias: {
+      '@': ENTRY,
+    }
+  },
   module: {
     rules: [
       {

@@ -33,6 +33,11 @@ module.exports = {
       _DEV_
     })
   ],
+  resolve: {
+    alias: {
+      '@': path.join(__dirname, '../src/')
+    }
+  },
   module: {
     rules: [
       {
