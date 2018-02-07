@@ -44,14 +44,15 @@ const root = (
 
 | Type             | Result                           |
 | ---------------- | -------------------------------- |
-| Element instance | Element(DOMElement)             |
+| Element instance | Element(DOMElement)              |
 | String           | TextNode                         |
 | Number           | TextNode                         |
-| Undefined        | Comment(`<!-- empty node -->`)   |
-| Null             | Comment(`<!-- empty node -->`)   |
-| Object           | Comment(`<!-- unknown node -->`) |
+| Undefined        | Comment(`<!-- empty node -->`)    |
+| Boolean          | Comment(`<!-- empty node -->`)    |
+| Null             | Comment(`<!-- empty node -->`)    |
+| Object           | `TyperError`                      |
 | Array            | DocumentFragment                 |
-| Default          | Comment(`<!-- unknown node -->`) |
+| Default          | Comment(`<!-- unknown node -->`)  |
 
 #### example
 

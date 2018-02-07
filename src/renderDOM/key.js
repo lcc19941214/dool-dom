@@ -1,7 +1,15 @@
 import _ from '@/utils';
-import Element from '../element';
+import { isElement } from '../element';
+import generateHash from 'random-hash';
 
-export const KEY = '$DOOL_KEY';
+export const CURRENT_HASH = generateHash({ length: 8 });
+
+function hashPrefix(str) {
+  return str + '$' + CURRENT_HASH;
+}
+
+export const KEY = hashPrefix`__doolInternalKey`;
+export const INTERNAL_INSTANCE = hashPrefix`__doolInternalInstance`;
 
 export const getKey = node => node && node[KEY];
 
@@ -32,7 +40,7 @@ export const checkAndAssignChildrenKey = (children, ...prefix) => {
       return;
     }
 
-    if (child instanceof Element) {
+    if (isElement(child)) {
       // if key of element is undefined, set key to index as default value
       // if element is one of an array, must set key with prefix
       if (_.isUndef(child.key)) {
@@ -49,6 +57,12 @@ export const checkAndAssignChildrenKey = (children, ...prefix) => {
   });
 };
 
+// export const setInternalInstance = (node, element) => {
+//   Object.defineProperty(node, INTERNAL_INSTANCE, {
+//     value: _.createFrozenObject(element)
+//   });
+// };
+
 /**
  * deeply iterate given root and print key of all elements
  */
@@ -64,7 +78,7 @@ export const getElementKeyTree = (root, log = true) => {
 
     const walkChildren = (children, indent) => {
       children.forEach(child => {
-        if (child instanceof Element) {
+        if (isElement(child)) {
           print(child, indent + '  ');
         } else if (_.isArray(child)) {
           walkChildren(child, indent);

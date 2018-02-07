@@ -1,9 +1,14 @@
 import _ from '@/utils';
-import Element from '../element';
-import { setKey, composeKey, getElementKeyTree, getDOMElementKeyTree } from './key';
+import { isElement } from '../element';
+import {
+  setKey,
+  composeKey,
+  getElementKeyTree,
+  getDOMElementKeyTree
+} from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { addEventHandlerForProps } from './eventHandler';
-import { typeError, checkTypeErrorWithWarning } from '@/helper/logTipsHelper';
+import { typeError } from '@/helper/logTipsHelper';
 
 /**
  * render Element instance to real DOM node, and attach it
@@ -34,7 +39,7 @@ export function render(element, mountPoint) {
  * @return {HTMLElement}
  */
 export function createDOM(element, defaultKey) {
-  if (element instanceof Element) {
+  if (isElement(element)) {
     return createElement(element, defaultKey);
   }
 
@@ -46,20 +51,25 @@ export function createDOM(element, defaultKey) {
     return createTextNode(element, defaultKey);
   }
 
-  if (_.isNull(element) || _.isUndef(element)) {
-    return createEmptyNode();
-  }
-
   if (_.isObject(element)) {
-    checkTypeErrorWithWarning(
-      'element',
-      'String, Number, Array, undefined, null or an instance of Element',
-      element
+    throw new TypeError(
+      typeError(
+        'element',
+        'String, Number, Array, undefined, null or an instance of Element',
+        element
+      )
     );
-    return createUnknownNode();
   }
 
-  return createUnknownNode();
+  if (_.isUndef(element) || _.isBoolean(element)) {
+    return createEmptyNode(defaultKey);
+  }
+
+  if (_.isNull(element)) {
+    return null;
+  }
+
+  return createUnknownNode(defaultKey);
 }
 
 function createElement(element = {}, defaultKey) {
@@ -99,7 +109,6 @@ function createElement(element = {}, defaultKey) {
     });
   } catch (error) {
     console.error(error);
-    elem = createUnknownNode();
   }
   return elem;
 }
@@ -120,12 +129,12 @@ function createTextNode(text, key) {
   return node;
 }
 
-function createEmptyNode() {
-  return document.createComment('empty node');
+function createEmptyNode(key) {
+  return document.createComment(` empty node: ${key} `);
 }
 
-function createUnknownNode() {
-  return document.createComment('unknown node');
+function createUnknownNode(key) {
+  return document.createComment(` unknown node: ${key} `);
 }
 
 const RenderDOM = {

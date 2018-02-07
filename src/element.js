@@ -3,6 +3,8 @@ import { checkKey, checkAndAssignChildrenKey } from './renderDOM/key';
 
 const { createDOM } = RenderDOM;
 
+export const isElement = val => val instanceof Element;
+
 export default class Element {
   static createElement(...args) {
     return new Element(...args);

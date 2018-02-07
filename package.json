@@ -35,11 +35,12 @@
     "eslint-plugin-react": "^7.5.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
+    "minimist": "^1.2.0",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "minimist": "^1.2.0",
-    "uglifyjs-webpack-plugin": "^1.1.6"
+    "random-hash": "^4.0.1"
   }
 }
