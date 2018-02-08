@@ -36,8 +36,8 @@ function diffEventHandler(preProps, nextProps) {
   Object.keys(preHandlers).forEach(key => {
     if (preHandlers[key] !== nextHandlers[key]) {
       diffs[key] = {
-        new: nextHandlers[key],
-        old: preHandlers[key]
+        newHandler: nextHandlers[key],
+        oldHandler: preHandlers[key]
       };
     }
   });
@@ -45,7 +45,7 @@ function diffEventHandler(preProps, nextProps) {
   Object.keys(nextHandlers).forEach(key => {
     if (!preHandlers.hasOwnProperty(key)) {
       diffs[key] = {
-        new: nextHandlers[key]
+        newHandler: nextHandlers[key]
       };
     }
   });

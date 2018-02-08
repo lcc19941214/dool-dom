@@ -26,9 +26,22 @@ export default class Element {
         value: true
       }
     });
+
+    this.count = computeChildCount(children);
   }
 
   render() {
     return Element.render(this);
   }
+}
+
+function computeChildCount(children) {
+  let count = 0;
+  children.forEach(child => {
+    if (isElement(child)) {
+      count += child.count;
+    }
+    count++;
+  });
+  return count;
 }

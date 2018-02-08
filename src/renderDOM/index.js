@@ -1,7 +1,7 @@
 import _ from '@/utils';
 import { isElement } from '../element';
 import {
-  setKey,
+  setKeyForNode,
   composeKey,
   getElementKeyTree,
   getDOMElementKeyTree
@@ -66,7 +66,7 @@ export function createDOM(element, defaultKey) {
   }
 
   if (_.isNull(element)) {
-    return null;
+    return createEmptyNode(defaultKey);
   }
 
   return createUnknownNode(defaultKey);
@@ -88,7 +88,7 @@ function createElement(element = {}, defaultKey) {
     }
 
     // set key
-    setKey(elem, key);
+    setKeyForNode(elem, key);
 
     // set props
     Object.keys(props).forEach(name => {
@@ -113,11 +113,11 @@ function createElement(element = {}, defaultKey) {
   return elem;
 }
 
-function createDocumentFragment(child, parentKey) {
+function createDocumentFragment(child, indexKey) {
   const elem = document.createDocumentFragment();
   child.forEach((subChild, idx) => {
     const key = idx + 1;
-    const subElem = createDOM(subChild, composeKey(parentKey, key));
+    const subElem = createDOM(subChild, composeKey(indexKey, key));
     if (subElem) elem.appendChild(subElem);
   });
   return elem;
@@ -125,7 +125,7 @@ function createDocumentFragment(child, parentKey) {
 
 function createTextNode(text, key) {
   const node = document.createTextNode(text);
-  setKey(node, key);
+  setKeyForNode(node, key);
   return node;
 }
 

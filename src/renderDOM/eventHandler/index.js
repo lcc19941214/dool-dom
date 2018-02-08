@@ -27,3 +27,20 @@ export function addEventHandlerForProps(elem, props) {
     }
   });
 }
+
+export function updateEventHandler(elem, props) {
+  const oldHandlers = {};
+  const newHandlers = {};
+
+  Object.keys(props).forEach(name => {
+    const { oldHandler, newHandler } = props[name];
+    oldHandlers[name] = oldHandler;
+    newHandlers[name] = newHandler;
+  });
+
+  Object.keys(oldHandlers).forEach(name => {
+    removeEventListener(elem, getEventName(name), oldHandlers[name]);
+  });
+
+  addEventHandlerForProps(elem, newHandlers);
+}

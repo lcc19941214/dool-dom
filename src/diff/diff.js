@@ -1,8 +1,8 @@
-import * as PATCHES from '../patches/constant/patches';
+import * as PATCHES from '../update/constant/patches';
 import _ from '@/utils';
 import { isElement } from '../element';
 import propsDiff from './propsDiff';
-import listDiff from './listDiff';
+import listDiff, { NULL_ELEMENT } from './listDiff';
 
 /**
  * @param {Element} oldTree
@@ -19,7 +19,7 @@ function diff(oldTree, newTree) {
 function diffWalk(oldElem, newElem, index, patches) {
   const currentPatch = [];
 
-  if (_.isNull(newElem)) {
+  if (newElem === NULL_ELEMENT) {
     // did nothing here
     // oldElem will be removed when compare with patches of itself
   } else if (
@@ -42,6 +42,8 @@ function diffWalk(oldElem, newElem, index, patches) {
     }
     diffChildren(oldElem.children, newElem.children, index, patches, currentPatch);
   } else {
+    // TODO:
+    // null, undefined will still be render as new comment node
     currentPatch.push({ type: PATCHES.REPLACE, payload: newElem });
   }
 
@@ -51,8 +53,8 @@ function diffWalk(oldElem, newElem, index, patches) {
 }
 
 function diffChildren(oldChildren, newChildren, index, patches, currentPatch) {
-  oldChildren = _.flatten(oldChildren);
-  newChildren = _.flatten(newChildren);
+  oldChildren = _.flatten(oldChildren, true);
+  newChildren = _.flatten(newChildren, true);
 
   const listDiffs = listDiff(oldChildren, newChildren);
   const { children: nextChildren, moves } = listDiffs;
@@ -61,10 +63,13 @@ function diffChildren(oldChildren, newChildren, index, patches, currentPatch) {
   }
 
   let currentIndex = index;
+  let leftNode = null;
   oldChildren.forEach((child, idx) => {
-    currentIndex++;
+    currentIndex =
+      leftNode && leftNode.count ? currentIndex + leftNode.count + 1 : currentIndex + 1;
     const newChild = nextChildren[idx];
     diffWalk(child, newChild, currentIndex, patches);
+    leftNode = child;
   });
 }
 

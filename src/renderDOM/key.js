@@ -11,9 +11,10 @@ function hashPrefix(str) {
 export const KEY = hashPrefix`__doolInternalKey`;
 export const INTERNAL_INSTANCE = hashPrefix`__doolInternalInstance`;
 
-export const getKey = node => node && node[KEY];
+export const getKeyOfElement = elem => elem && elem.key;
+export const getKeyOfNode = node => node && node[KEY];
 
-export const setKey = (node, key) => {
+export const setKeyForNode = (node, key) => {
   if (checkKey(key)) {
     Object.defineProperty(node, KEY, {
       value: key.toString()
