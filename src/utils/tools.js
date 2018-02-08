@@ -9,14 +9,14 @@ const tools = {
 
   /**
    * flatten given array with specific level
-   * @param {array} - array
-   * @param {number|boolean} - [level=1] when level is true, means flatten iteratively
+   * @param {array} array
+   * @param {number|boolean} [level=1] when level is true, means flatten iteratively
    * @example
    * flatten([1, [2, [3]]]) => [1, 2, [3]]
    * flatten([1, [2, [3]]], true) => [1, 2, 3]
    */
   flatten: (array, level = 1) => {
-    let deep = 0;
+    let deep = -1;
 
     if (typeCheck.isBoolean(level)) {
       level = level || 1;
@@ -25,16 +25,16 @@ const tools = {
     }
 
     function _flatten(array, deep) {
-      if (!typeCheck.isArray(array)) return array;
-      const rst = [];
-
       if (level !== true && deep === level) {
         return [array];
       }
 
+      if (!typeCheck.isArray(array)) return array;
+      let rst = [];
+
       array.forEach(x => {
         if (typeCheck.isArray(x)) {
-          x.forEach(y => rst.push(...[].concat(_flatten(y, deep + 1))));
+          rst = rst.concat(_flatten(x, deep + 1))
         } else {
           rst.push(x);
         }
@@ -46,5 +46,7 @@ const tools = {
     return _flatten(array, deep);
   }
 };
+
+window.flatten = tools.flatten;
 
 export default tools;

@@ -4,7 +4,8 @@
   "description": "",
   "main": "./lib/dool-dom.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage --silent",
+    "test:last" :"npm run test -- --lastCommit",
     "lint": "eslint src/**",
     "build": "npm run compile & npm run compile -- --uglify & wait",
     "compile": "node ./build.js",
@@ -35,12 +36,16 @@
     "eslint-plugin-react": "^7.5.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
+    "jest": "^22.2.1",
+    "markdown-loader": "^2.0.2",
     "minimist": "^1.2.0",
+    "raw-loader": "^0.5.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
+    "marked": "^0.3.12",
     "random-hash": "^4.0.1"
   }
 }
