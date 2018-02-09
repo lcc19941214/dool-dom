@@ -1,5 +1,5 @@
-import RenderDOM from './renderDOM';
-import { checkKey, checkAndAssignChildrenKey } from './renderDOM/key';
+import RenderDOM from '@/renderDOM';
+import { checkKey, checkAndAssignChildrenKey } from '@/renderDOM/key';
 import _ from '@/utils';
 
 const { createDOM } = RenderDOM;

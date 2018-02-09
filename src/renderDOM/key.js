@@ -1,5 +1,5 @@
 import _ from '@/utils';
-import { isElement } from '../element';
+import { isElement } from '@/element';
 // import generateHash from 'random-hash';
 
 export const CURRENT_HASH = Math.random()
