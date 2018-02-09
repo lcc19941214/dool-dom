@@ -47,7 +47,6 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "marked": "^0.3.12",
     "random-hash": "^4.0.1"
   }
 }
