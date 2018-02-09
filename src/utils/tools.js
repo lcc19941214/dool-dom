@@ -34,7 +34,7 @@ const tools = {
 
       array.forEach(x => {
         if (typeCheck.isArray(x)) {
-          rst = rst.concat(_flatten(x, deep + 1))
+          rst = rst.concat(_flatten(x, deep + 1));
         } else {
           rst.push(x);
         }
@@ -44,7 +44,17 @@ const tools = {
     }
 
     return _flatten(array, deep);
-  }
+  },
+
+  /**
+   * @returns {string}
+   * @example
+   * yqd5omib22d
+   */
+  createHash: () =>
+    Math.random()
+      .toString(36)
+      .slice(2)
 };
 
 window.flatten = tools.flatten;

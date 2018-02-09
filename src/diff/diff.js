@@ -1,6 +1,6 @@
 import * as PATCHES from '../update/constant/patches';
 import _ from '@/utils';
-import { isElement } from '../element';
+import { isDoolElement } from '../element';
 import propsDiff from './propsDiff';
 import listDiff, { NULL_ELEMENT } from './listDiff';
 
@@ -31,8 +31,8 @@ function diffWalk(oldElem, newElem, index, patches) {
       currentPatch.push({ type: PATCHES.TEXT, payload: newElem });
     }
   } else if (
-    isElement(oldElem) &&
-    isElement(newElem) &&
+    isDoolElement(oldElem) &&
+    isDoolElement(newElem) &&
     oldElem.tagName === newElem.tagName &&
     oldElem.key === newElem.key
   ) {

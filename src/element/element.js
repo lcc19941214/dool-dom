@@ -4,7 +4,7 @@ import _ from '@/utils';
 
 const { createDOM } = RenderDOM;
 
-export const isElement = val => val instanceof Element;
+export const isDoolElement = val => val instanceof Element;
 
 export default class Element {
   static createElement(...args) {
@@ -39,7 +39,7 @@ export default class Element {
 function computeChildCount(children) {
   let count = 0;
   _.flatten(children).forEach(child => {
-    if (isElement(child)) {
+    if (isDoolElement(child)) {
       count += child.count;
     }
     count++;

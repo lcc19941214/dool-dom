@@ -1,10 +1,8 @@
 import _ from '@/utils';
-import { isElement } from '@/element';
+import { isDoolElement } from '@/element';
 // import generateHash from 'random-hash';
 
-export const CURRENT_HASH = Math.random()
-  .toString(36)
-  .slice(2);
+export const CURRENT_HASH = _.createHash();
 
 function hashPrefix(str) {
   return str + '$' + CURRENT_HASH;
@@ -43,7 +41,7 @@ export const checkAndAssignChildrenKey = (children, ...prefix) => {
       return;
     }
 
-    if (isElement(child)) {
+    if (isDoolElement(child)) {
       // if key of element is undefined, set key to index as default value
       // if element is one of an array, must set key with prefix
       if (_.isUndef(child.key)) {
@@ -81,7 +79,7 @@ export const getElementKeyTree = (root, log = true) => {
 
     const walkChildren = (children, indent) => {
       children.forEach(child => {
-        if (isElement(child)) {
+        if (isDoolElement(child)) {
           print(child, indent + '  ');
         } else if (_.isArray(child)) {
           walkChildren(child, indent);

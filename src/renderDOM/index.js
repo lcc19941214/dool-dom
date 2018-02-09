@@ -1,5 +1,5 @@
 import _ from '@/utils';
-import { isElement } from '../element';
+import { isDoolElement } from '../element';
 import { setKeyForNode, composeKey, getElementKeyTree, getDOMElementKeyTree } from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { addEventHandlerForProps } from './eventHandler';
@@ -34,7 +34,7 @@ export function render(element, mountPoint) {
  * @return {HTMLElement}
  */
 export function createDOM(element, defaultKey) {
-  if (isElement(element)) {
+  if (isDoolElement(element)) {
     return createElement(element, defaultKey);
   }
 
