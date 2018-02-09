@@ -1,8 +1,10 @@
 import _ from '@/utils';
 import { isElement } from '../element';
-import generateHash from 'random-hash';
+// import generateHash from 'random-hash';
 
-export const CURRENT_HASH = generateHash({ length: 8 });
+export const CURRENT_HASH = Math.random()
+  .toString(36)
+  .slice(2);
 
 function hashPrefix(str) {
   return str + '$' + CURRENT_HASH;

@@ -37,9 +37,7 @@
     "eslint-plugin-react": "^7.5.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
-    "jest": "^22.2.1",
     "jest-plugin-console-matchers": "^2.6.0",
-    "markdown-loader": "^2.0.2",
     "minimist": "^1.2.0",
     "raw-loader": "^0.5.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
@@ -47,6 +45,6 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "random-hash": "^4.0.1"
+    "jest": "^22.2.1"
   }
 }
