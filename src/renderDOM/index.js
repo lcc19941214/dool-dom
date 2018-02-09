@@ -1,11 +1,6 @@
 import _ from '@/utils';
 import { isElement } from '../element';
-import {
-  setKeyForNode,
-  composeKey,
-  getElementKeyTree,
-  getDOMElementKeyTree
-} from './key';
+import { setKeyForNode, composeKey, getElementKeyTree, getDOMElementKeyTree } from './key';
 import { setValueForProperty, setValueForInlineStyle } from './property';
 import { addEventHandlerForProps } from './eventHandler';
 import { typeError } from '@/helper/logTipsHelper';
@@ -62,14 +57,14 @@ export function createDOM(element, defaultKey) {
   }
 
   if (_.isUndef(element) || _.isBoolean(element)) {
-    return createEmptyNode(defaultKey);
+    return createEmptyNode();
   }
 
   if (_.isNull(element)) {
-    return createEmptyNode(defaultKey);
+    return createEmptyNode();
   }
 
-  return createUnknownNode(defaultKey);
+  return createUnknownNode();
 }
 
 function createElement(element = {}, defaultKey) {
@@ -129,12 +124,12 @@ function createTextNode(text, key) {
   return node;
 }
 
-function createEmptyNode(key) {
-  return document.createComment(` empty node: ${key} `);
+function createEmptyNode() {
+  return document.createComment('empty node');
 }
 
-function createUnknownNode(key) {
-  return document.createComment(` unknown node: ${key} `);
+function createUnknownNode() {
+  return document.createComment('unknown node');
 }
 
 const RenderDOM = {
@@ -145,7 +140,12 @@ const RenderDOM = {
 if (_DEV_) {
   Object.assign(RenderDOM, {
     getElementKeyTree,
-    getDOMElementKeyTree
+    getDOMElementKeyTree,
+    createElement,
+    createDocumentFragment,
+    createTextNode,
+    createEmptyNode,
+    createUnknownNode
   });
 }
 
