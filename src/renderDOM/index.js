@@ -125,11 +125,11 @@ function createTextNode(text, key) {
 }
 
 function createEmptyNode() {
-  return document.createComment('empty node');
+  return document.createComment(' empty node ');
 }
 
 function createUnknownNode() {
-  return document.createComment('unknown node');
+  return document.createComment(' unknown node ');
 }
 
 const RenderDOM = {
