@@ -1,4 +1,4 @@
-# Dool-DOM ![inspired by Dool](https://img.shields.io/badge/inspired%20by-Dool-orange.svg)
+# Dool-DOM ![build](https://travis-ci.org/lcc19941214/dool-dom.svg?branch=master) [![codecov](https://codecov.io/gh/lcc19941214/dool-dom/branch/master/graph/badge.svg)](https://codecov.io/gh/lcc19941214/dool-dom) ![inspired by Dool](https://img.shields.io/badge/inspired%20by-Dool-orange.svg) ![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
 > Dool-DOM is a basic implementation of DOM manipulation lib.
 
