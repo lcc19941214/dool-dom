@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 
 import { Element } from '@/index';
+import 'jest-plugin-console-matchers/setup';
 
 describe('null property', () => {
   test('null property should be removed', () => {
@@ -11,29 +12,59 @@ describe('null property', () => {
     );
     const div = document.createElement('div');
     div.setAttribute('id', 'hello');
+    div.textContent = 'hello';
 
     expect(elem.render()).toEqual(div);
   });
 });
 
 describe('property and attribute', () => {
-  let elem = <input type="checkbox" checked disabled={null} />;
-  let elemDOM = elem.render();
-  const input = document.createElement('input');
-  input.setAttribute('type', 'checkbox');
-  input.checked = true;
-  test('use property', () => {
-    expect(elemDOM).toEqual(input);
+  function getElemAndDOM() {
+    let elem = <input type="checkbox" checked disabled={null} />;
+    let elemDOM = elem.render();
+
+    const input = document.createElement('input');
+    input.setAttribute('type', 'checkbox');
+    input.checked = true;
+    return {
+      elem,
+      elemDOM,
+      input
+    };
+  }
+
+  test('property checked should equal', () => {
+    const { elemDOM, input } = getElemAndDOM();
+    expect(elemDOM.checked).toBe(input.checked);
   });
 
-  input.checked = false;
+  test('property disabled equal', () => {
+    const { elemDOM, input } = getElemAndDOM();
+    expect(elemDOM.disabled).toBe(input.disabled);
+  });
+
   test('boolean props should not equal to DOM which property is falsy', () => {
-    expect(elemDOM).not.toEqual(input);
+    const { elemDOM, input } = getElemAndDOM();
+    input.checked = false;
+    expect(elemDOM.checked).not.toBe(input.checked);
   });
 
-  elem = <input type="checkbox" checked={false} />;
-  elemDOM = elem.render();
   test('boolean props should equal to DOM which property is truethy', () => {
-    expect(elemDOM).toEqual(input);
+    const elem = <input type="checkbox" checked={null} />;
+    const elemDOM = elem.render();
+    const { input } = getElemAndDOM();
+    input.checked = false;
+    expect(elemDOM.checked).toBe(input.checked);
+  });
+});
+
+describe('unexpected props value', () => {
+  test('style is not an object', () => {
+    const setStyle = () => {
+      const elem = <div style={1} />;
+      elem.render();
+    };
+
+    expect(setStyle).toConsoleWarn();
   });
 });

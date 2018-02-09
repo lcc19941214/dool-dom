@@ -1,3 +1,4 @@
+import _ from '@/utils';
 import {
   BOOLEAN,
   DIFFERENT_NAME_PROPS_MAP,
@@ -6,8 +7,7 @@ import {
   shouldRemoveProperty,
   shouldSetValueForPropertyWithWarning
 } from './DOMProperty';
-import { shouldIgnoreStyle, shouldRemoveStyle, getStyleInfo } from './CSSStyle';
-import { checkTypeErrorWithWarning } from '@/helper/logTipsHelper';
+import { checkStyleType, shouldIgnoreStyle, shouldRemoveStyle, getStyleInfo } from './CSSStyle';
 
 /**
  * @param {DOMElement} elem
@@ -55,32 +55,25 @@ export function setValueForProperty(elem, name, value) {
 }
 
 export function setValueForInlineStyle(elem, style) {
+  style = checkStyleType(style, elem);
   if (!style) return;
 
-  try {
-    let styleStr = '';
-    Object.keys(style).forEach(name => {
-      const value = style[name];
-      const propertyInfo = getStyleInfo(name);
+  let styleStr = '';
+  Object.keys(style).forEach(name => {
+    let value = style[name];
+    const propertyInfo = getStyleInfo(name);
 
-      if (!propertyInfo) return;
-      if (shouldIgnoreStyle(name, value, propertyInfo)) return;
-      if (shouldRemoveStyle(name, value, propertyInfo)) return;
+    if (!propertyInfo) return;
+    if (shouldIgnoreStyle(name, value, propertyInfo)) return;
+    if (shouldRemoveStyle(name, value, propertyInfo)) {
+      elem.style[name] = null;
+      return;
+    }
 
-      const { propertyName } = propertyInfo;
-      styleStr += `${propertyName}: ${value}; `;
-    });
-    if (styleStr) {
-      elem.setAttribute('style', styleStr.trim());
-    }
-  } catch (e) {
-    if (e instanceof TypeError) {
-      checkTypeErrorWithWarning('style', 'an Object', style);
-    } else {
-      console.error(e);
-    }
+    const { propertyName } = propertyInfo;
+    styleStr += `${propertyName}: ${value}; `;
+  });
+  if (styleStr) {
+    elem.setAttribute('style', styleStr.trim());
   }
 }
-
-// TODO:
-// use elem.style.property = value to update

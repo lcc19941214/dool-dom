@@ -1,4 +1,18 @@
 import _ from '@/utils';
+import { checkTypeErrorWithWarning } from '@/helper/logTipsHelper';
+
+export function checkStyleType(style) {
+  if (_.isUndef(style) || _.isNull(style)) {
+    style = {};
+  }
+
+  if (!_.isObject(style)) {
+    checkTypeErrorWithWarning('style', 'Object, null or undefined', style);
+    return;
+  }
+
+  return style;
+}
 
 export function shouldIgnoreStyle(name, value) {
   switch (typeof value) {
@@ -28,8 +42,7 @@ export function shouldRemoveStyle(name = '', value, propertyInfo) {
  */
 export function getStyleInfo(name = '', allowDefault = true) {
   return (
-    styles[name] ||
-    (allowDefault ? new PropertyInfo(name, _.transformUpperWithHyphen(name)) : null)
+    styles[name] || (allowDefault ? new PropertyInfo(name, _.transformUpperWithHyphen(name)) : null)
   );
 }
 

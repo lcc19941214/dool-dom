@@ -3,6 +3,7 @@ import {
   shouldIgnoreProperty,
   isEventHandler
 } from '../renderDOM/property/DOMProperty';
+import { checkStyleType } from '../renderDOM/property/CSSStyle';
 
 function diffObject(pre, next) {
   const diffs = {};
@@ -55,7 +56,12 @@ function diffEventHandler(preProps, nextProps) {
 
 function diffStyle(preProps, nextProps) {
   const { style: pre = {} } = preProps;
-  const { style: next = {} } = nextProps;
+  let { style: next = {} } = nextProps;
+
+  // if next style is not valid, return undefined.
+  // thus pre style rules would be all removed.
+  next = checkStyleType(next);
+  if (!next) return;
 
   // TODO:
   // handle ES5 Object.keys TypeError

@@ -3597,6 +3597,10 @@ jest-mock@^22.2.0:
   version "22.2.0"
   resolved "http://npm.byted.org/jest-mock/-/jest-mock-22.2.0.tgz#444b3f9488a7473adae09bc8a77294afded397a7"
 
+jest-plugin-console-matchers@^2.6.0:
+  version "2.6.0"
+  resolved "http://npm.byted.org/jest-plugin-console-matchers/-/jest-plugin-console-matchers-2.6.0.tgz#d12ae9976bdaa049a0b73fa9bc4107fd1d3b0fea"
+
 jest-regex-util@^22.1.0:
   version "22.1.0"
   resolved "http://npm.byted.org/jest-regex-util/-/jest-regex-util-22.1.0.tgz#5daf2fe270074b6da63e5d85f1c9acc866768f53"

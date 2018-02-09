@@ -46,14 +46,25 @@ describe('update a DOM', () => {
   });
 
   test('remove handler', () => {
-    const div1 = <div onClick={() => {}}>A</div>;
-    const div2 = <div onClick={() => {}}>B</div>;
+    let a = 0;
+    let b;
+    let c;
+    const handler1 = () => a++;
+    const handler2 = () => a--;
+
+    const div1 = <div onClick={handler1}>A</div>;
+    const div2 = <div onClick={handler2}>B</div>;
 
     const div1DOM = div1.render();
-    const div2DOM = div2.render();
+
+    div1DOM.click();
+    b = a;
+
     const diffs = diff(div1, div2);
     update(div1DOM, diffs);
+    div1DOM.click();
+    c = a;
 
-    expect(div1DOM).toEqual(div2DOM);
+    expect(b).not.toBe(c);
   });
 });
