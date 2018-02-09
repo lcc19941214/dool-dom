@@ -11,7 +11,7 @@ export const ATTR = 1;
 // property name, despite the value is true, false or any other values
 export const BOOLEAN = 2;
 
-export const EVENT_HANDLER_PROP = /^on([A-Z][a-z]+)+$/g;
+export const EVENT_HANDLER_PROP = /^on([A-Z][a-z]+)+$/;
 export const isEventHandler = name => name.length > 2 && EVENT_HANDLER_PROP.test(name);
 
 export function shouldIgnoreProperty(name = '', value, propertyInfo) {
