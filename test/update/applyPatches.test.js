@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 
-import { Element, RenderDOM, diff, update } from '../../src/';
+import { Element, diff, update } from '../../src/';
 
 describe('update a DOM', () => {
   test('div1 applied diff patches is equal to div2', () => {
@@ -16,13 +16,15 @@ describe('update a DOM', () => {
             ))}
           </ul>
         }
+        <div key="first">to be removed</div>
       </div>
     );
+
     var div2 = (
       <div className="happy ok" contentEditable style={{ fontSize: '20px' }} onClick={console.log}>
         {
           <ul id="2">
-            {[10, 20, 30].map(v => (
+            {[10, 20, 30, 40].map(v => (
               <li className={v}>
                 <div>{`1-${v}`}</div>
                 <div>{`2-${v}`}</div>

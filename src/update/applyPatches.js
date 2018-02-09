@@ -66,6 +66,7 @@ function updateProps(node, props) {
 function reorderChildren(node, moves, idx) {
   const nodeList = [...node.childNodes];
   const map = {};
+
   nodeList.forEach(n => {
     const key = getKeyOfNode(n);
     if (key) {
@@ -73,7 +74,7 @@ function reorderChildren(node, moves, idx) {
     }
   });
 
-  moves.forEach((move) => {
+  moves.forEach(move => {
     const { type, payload, index } = move;
     switch (type) {
       case PATCHES.REORDER_REMOVE:
@@ -82,7 +83,8 @@ function reorderChildren(node, moves, idx) {
         break;
       case PATCHES.REORDER_INSERT:
         var key = getKeyOfElement(payload);
-        var insertNode = key ? map[key].cloneNode(true) : RenderDOM.createDOM(payload, idx);
+        var insertNode =
+          key && map[key] ? map[key].cloneNode(true) : RenderDOM.createDOM(payload, idx);
         node.insertBefore(insertNode, nodeList[index]);
         nodeList.splice(index, 0, insertNode);
         break;

@@ -24,6 +24,7 @@
     "no-console": 1,
     "max-len": [1, { "code": 100 }],
     "react/react-in-jsx-scope": 0,
-    "react/no-unknown-property": [1, { "ignore": ["class"] }]
+    "react/no-unknown-property": [1, { "ignore": ["class"] }],
+    "no-unused-vars": [2, { "varsIgnorePattern": "Element" }]
   }
 }
