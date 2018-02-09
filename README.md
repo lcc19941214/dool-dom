@@ -107,8 +107,10 @@ document.body.appendChild(appDOM);
 ```jsx
 import { Element } from 'dool-dom';
 
+const handler = (e) => console.log('Hello Dool');
+
 const root = (
-  <div>
+  <div onClick={handler}>
     <h1>Headline</h1>
     text
     7873632
@@ -124,10 +126,11 @@ const root = (
   </div>
 );
 
-root.render();
+const rootElem = root.render();
+rootElem.click(); // 'Hello Dool'
 ```
 
-**output**
+**output HTML**
 
 ```html
 <body>
@@ -186,7 +189,7 @@ createDOM(element): DOM Node
 
 Render element to real DOM node.
 
-##### Acceptable Element type
+##### Acceptable Children type
 
 | Type             | Result                           |
 | ---------------- | -------------------------------- |
@@ -199,6 +202,15 @@ Render element to real DOM node.
 | Object           | `TyperError`                     |
 | Array            | DocumentFragment                 |
 | Default          | Comment(`<!-- unknown node -->`) |
+
+##### Acceptable Props
+
+| Prop            | e.g.                                 | Description                              |
+| --------------- | ------------------------------------ | ---------------------------------------- |
+| key             | -                                    | Key is important for Dool-DOM to compare two Elements while diffing. Default key is child index. |
+| HTML attributes | `className` `contentEditable`        | All valid HTML attributes can be pass to renderd DON Node. Props have `null` or `undefined` value will be removed. |
+| Style           | `{ color: 'red', fontSize: '20px' }` | An object is required for `style`. Style rules have `null` or `undefined` value will be removed. |
+| Event Handler   | `onClick={handler}`                  | Pass `onXXX` prop to Element, Dool-DOM will automaticly add event listener to it. Handler shall be a function, or Dool-DOM will throw an warning and skip it. |
 
 
 
