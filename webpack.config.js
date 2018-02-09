@@ -1,5 +1,6 @@
 const argv = require('minimist')(process.argv.slice(2));
 const path = require('path');
+const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const ENTRY = path.join(__dirname, 'src');
@@ -12,7 +13,11 @@ const filename = (strings, ...values) => {
   return [name, uglify ? 'min' : '', ext].filter(v => v).join('.');
 };
 
-const plugins = [];
+const plugins = [
+  new webpack.DefinePlugin({
+    _DEV_: false
+  })
+];
 
 if (argv.uglify) {
   plugins.push(
@@ -37,7 +42,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.css', '.less'],
     alias: {
-      '@': ENTRY,
+      '@': ENTRY
     }
   },
   module: {
