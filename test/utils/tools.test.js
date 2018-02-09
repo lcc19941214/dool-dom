@@ -1,4 +1,4 @@
-import tools from '../../src/utils/tools';
+import tools from '@/utils/tools';
 
 describe('tool.flatten', () => {
   test('should flatten level 1', () => {

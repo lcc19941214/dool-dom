@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 
-import { Element, RenderDOM } from '../../src/';
+import { Element, RenderDOM } from '@/index';
 
 const element = (
   <div key="lily">

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 
-import { Element, RenderDOM } from '../../src/';
+import { Element, RenderDOM } from '@/index';
 
 const clearSpace = str => str.replace(/[\n\t\s\r]/g, '');
 
@@ -45,25 +45,6 @@ describe('create Element DOM', () => {
   // DOM
   test('DOM of RenderDOM.createDOM() and native DOM should be equal ', () => {
     expect(elemDOM).toEqual(dom);
-  });
-
-  // eventHandler
-  test('event handler should work', () => {
-    const handler = function() {
-      this._count = this._count ? this._count + 1 : 1;
-    };
-    const elem = <div onClick={handler}>click me</div>;
-    const elemDOM = elem.render();
-
-    const divDOM = document.createElement('div');
-    divDOM.onclick = handler;
-
-    for (let index = 0; index < 10; index++) {
-      elemDOM.click();
-      divDOM.click();
-    }
-
-    expect(elemDOM._count).toBe(divDOM._count);
   });
 });
 

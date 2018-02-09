@@ -1,5 +1,5 @@
-import listDiff from '../../src/diff/listDiff';
-import * as PATCHES from '../../src/update/constant/patches';
+import listDiff from '@/diff/listDiff';
+import * as PATCHES from '@/update/constant/patches';
 
 const REMOVE = PATCHES.REORDER_REMOVE;
 const INSERT = PATCHES.REORDER_INSERT;
