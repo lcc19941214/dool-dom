@@ -32,6 +32,7 @@ describe('update a DOM', () => {
             ))}
           </ul>
         }
+        <div key="last">to be replaced</div>
       </div>
     );
     const div1DOM = div1.render();

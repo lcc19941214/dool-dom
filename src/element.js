@@ -1,5 +1,6 @@
 import RenderDOM from './renderDOM';
 import { checkKey, checkAndAssignChildrenKey } from './renderDOM/key';
+import _ from '@/utils';
 
 const { createDOM } = RenderDOM;
 
@@ -37,7 +38,7 @@ export default class Element {
 
 function computeChildCount(children) {
   let count = 0;
-  children.forEach(child => {
+  _.flatten(children).forEach(child => {
     if (isElement(child)) {
       count += child.count;
     }
