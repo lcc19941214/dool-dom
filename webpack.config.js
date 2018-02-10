@@ -2,6 +2,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const ENTRY = path.join(__dirname, 'src');
 
@@ -16,7 +17,8 @@ const filename = (strings, ...values) => {
 const plugins = [
   new webpack.DefinePlugin({
     _DEV_: false
-  })
+  }),
+  new LodashModuleReplacementPlugin()
 ];
 
 if (argv.uglify) {
