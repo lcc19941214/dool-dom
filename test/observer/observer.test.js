@@ -72,13 +72,25 @@ describe('observe an nested object', () => {
 });
 
 describe('watcher', () => {
+  let a;
+  let handler;
+
+  beforeEach(() => {
+    a = 0;
+    handler = () => a++;
+  });
+
   test('watch object value change', () => {
-    let a = 0;
-    const handler = () => a++;
     const { observedFoo } = getObservedObjectWithWatcher(handler);
     observedFoo.name = 'Bob';
     observedFoo.age = 10;
     expect(a).toBe(2);
+  });
+
+  test('watch nested object value change', () => {
+    const bar = observe({ a: { b: { c: 'd' } } }, handler);
+    bar.a.b.c = 'e';
+    expect(a).toBe(1);
   });
 });
 

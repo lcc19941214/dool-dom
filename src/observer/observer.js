@@ -19,11 +19,16 @@ export default function observe(val, watcher) {
 export class Observer {
   constructor(val, watcher) {
     this.value = val;
-    this.key = _.createHash();
+
+    Object.defineProperties(this, {
+      key: { value: _.createHash() }
+    });
+
+    Object.defineProperties(this.value, {
+      _ob: { value: this }
+    });
 
     this.dfsWalk(val, watcher);
-
-    this.assignObserver();
   }
 
   composeKey(str) {
@@ -32,6 +37,11 @@ export class Observer {
 
   dfsWalk(val, watcher) {
     if (_.isArray(val)) {
+      // TODO:
+      // cases as below will not trigger eventHub
+      // 1. array.item = newItem
+      // 2. array.length = newLength
+
       val.forEach(v => observe(v, watcher));
       return;
     }
@@ -47,26 +57,15 @@ export class Observer {
       eventHub.on(key, watcher);
     }
 
-    let rst = observe(value);
+    let rst = observe(value, watcher);
     Object.defineProperty(this.value, name, {
       configurable: true,
       enumerable: true,
       get: () => rst,
       set: newValue => {
-        rst = observe(newValue);
+        rst = observe(newValue, watcher);
         eventHub.emit(key, rst);
       }
-    });
-  }
-
-  assignObserver() {
-    // TODO:
-    // cases as below will not trigger eventHub
-    // 1. array.item = newItem
-    // 2. array.length = newLength
-
-    Object.defineProperty(this.value, '_ob', {
-      value: this
     });
   }
 }
