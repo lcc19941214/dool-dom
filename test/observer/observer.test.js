@@ -1,4 +1,5 @@
 import observe from '@/observer';
+import { INTERNAL_FLAG } from '@/observer/observer';
 
 const getFoo = () => ({ name: 'bar', age: 25 });
 const getNestedFoo = () => ({
@@ -54,8 +55,8 @@ describe('observe an object', () => {
     observedFoo = o;
   });
 
-  test('observed object should have `_ob` property', () => {
-    expect(observedFoo).toHaveProperty('_ob.value', foo);
+  test('observed object should have `INTERNAL_FLAG` property', () => {
+    expect(observedFoo).toHaveProperty(`${INTERNAL_FLAG}.value`, foo);
   });
 
   test('change observed object property', () => {
@@ -66,8 +67,8 @@ describe('observe an object', () => {
 
 describe('observe an nested object', () => {
   const { observedFoo } = getNestedObservedObject();
-  test('nested observed object should have `_ob` property', () => {
-    expect(observedFoo).toHaveProperty('props.foo._ob.value', observedFoo.props.foo);
+  test('nested observed object should have `INTERNAL_FLAG` property', () => {
+    expect(observedFoo).toHaveProperty(`props.foo.${INTERNAL_FLAG}.value`, observedFoo.props.foo);
   });
 });
 
@@ -106,7 +107,7 @@ describe('observe and watch array', () => {
 
   test('observed array should work', () => {
     const bar = observedFoo[3][0];
-    expect(bar).toHaveProperty('props.foo._ob.value', bar.props.foo);
+    expect(bar).toHaveProperty(`props.foo.${INTERNAL_FLAG}.value`, bar.props.foo);
   });
 
   test('watch array item value change', () => {

@@ -1,7 +1,9 @@
 import _ from '@/utils';
 import { EventHub } from '../event';
 
-const eventHub = new EventHub();
+export const INTERNAL_FLAG = '$ob';
+
+export const eventHub = new EventHub();
 
 /**
  * observe given value with iteration
@@ -25,14 +27,10 @@ export class Observer {
     });
 
     Object.defineProperties(this.value, {
-      _ob: { value: this }
+      [INTERNAL_FLAG]: { value: this }
     });
 
     this.dfsWalk(val, watcher);
-  }
-
-  composeKey(str) {
-    return str + '$' + this.key;
   }
 
   dfsWalk(val, watcher) {
@@ -52,7 +50,7 @@ export class Observer {
   }
 
   defineProperty(name, value, watcher) {
-    const key = this.composeKey`${name}`;
+    const key = composeObserverKey(this.key, name);
     if (watcher) {
       eventHub.on(key, watcher);
     }
@@ -69,3 +67,21 @@ export class Observer {
     });
   }
 }
+
+export const composeObserverKey = (observerKey, propName) => {
+  return observerKey + '$' + propName;
+};
+
+export const getObserverKey = val => {
+  const { [INTERNAL_FLAG]: observer } = val;
+  return observer && observer.key;
+};
+
+export const isObserver = val => {
+  if (_.isArray(val) || _.isObject(val)) {
+    const { [INTERNAL_FLAG]: observer } = val;
+    return observer && observer instanceof Observer && observer.value === val;
+  }
+
+  return false;
+};

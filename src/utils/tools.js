@@ -1,4 +1,5 @@
 import typeCheck from './typeCheck';
+import _ from 'lodash';
 
 const tools = {
   createFrozenObject: val => {
@@ -51,10 +52,15 @@ const tools = {
    * @example
    * yqd5omib22d
    */
-  createHash: () =>
-    Math.random()
+  createHash: () => {
+    return Math.random()
       .toString(36)
-      .slice(2)
+      .slice(2);
+  },
+
+  set: (...args) => _.set(...args),
+
+  get: (...args) => _.get(...args)
 };
 
 window.flatten = tools.flatten;
