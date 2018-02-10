@@ -19,7 +19,7 @@ export default class EventHub {
   on(key, handler) {
     const hub = HUB[this.id];
     hub[key] = hub[key] || [];
-    if (this.verbose || hub[key].indexOf(handler) === -1) {
+    if (this.verbose || _.isFunc(handler) && hub[key].indexOf(handler) === -1) {
       hub[key].push(handler);
     }
   }

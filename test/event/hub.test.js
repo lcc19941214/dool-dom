@@ -51,4 +51,12 @@ describe('EventHub', () => {
 
     expect(a).toBe(3);
   });
+
+  test('unexpected handler should not throw error', () => {
+    const tryWatchUndefined = () => {
+      hub.on('a');
+      hub.emit('a');
+    };
+    expect(tryWatchUndefined).not.toThrow();
+  });
 });
