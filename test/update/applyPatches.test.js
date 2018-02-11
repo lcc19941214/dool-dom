@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-key */
 
-import { Element, diff, update } from '@/index';
+import { Element } from '@/index';
+import diff from '@/diff';
+import update from '@/update';
 
 describe('update a DOM', () => {
   test('div1 applied diff patches is equal to div2', () => {
