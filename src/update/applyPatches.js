@@ -29,7 +29,6 @@ function updateNode(node, patches, idx) {
     switch (type) {
       case PATCHES.TEXT:
         updateTextNode(node, payload);
-        node.textContent = payload;
         break;
       case PATCHES.PROPS:
         updateProps(node, payload);
@@ -47,6 +46,8 @@ function updateNode(node, patches, idx) {
 }
 
 function updateTextNode(node, text) {
+  // TODO:
+  // to implement with IE or browsers not have textContent
   node.textContent = text;
 }
 

@@ -1,6 +1,5 @@
 import _ from '@/utils';
 import { isDoolElement } from '@/element';
-// import generateHash from 'random-hash';
 
 export const CURRENT_HASH = _.createHash();
 
@@ -57,12 +56,6 @@ export const checkAndAssignChildrenKey = (children, ...prefix) => {
     }
   });
 };
-
-// export const setInternalInstance = (node, element) => {
-//   Object.defineProperty(node, INTERNAL_INSTANCE, {
-//     value: _.createFrozenObject(element)
-//   });
-// };
 
 /**
  * deeply iterate given root and print key of all elements
