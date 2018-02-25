@@ -1,18 +1,20 @@
 import observe, { watch } from '@/observer';
-import { eventHub, composeObserverKey, getObserverKey } from '@/observer/observer';
 
-describe('watch observer value change', () => {
+describe('watch observer', () => {
   let obj;
   let a;
   let handler;
 
   beforeEach(() => {
-    obj = { a: { b: { c: 'c' } } };
+    obj = {
+      a: { b: { c: 'c' } },
+      arr: [{ i: 'i' }]
+    };
     a = 0;
     handler = () => a++;
   });
 
-  test('watch observer', () => {
+  test('watch object', () => {
     observe(obj);
     watch(obj, 'a.b.c', handler);
     obj.a.b.c = 'd';
@@ -20,17 +22,24 @@ describe('watch observer value change', () => {
     expect(a).toBe(1);
   });
 
+  test('watch array', () => {
+    observe(obj);
+    watch(obj, 'arr', handler, { deep: true });
+    obj.arr[0].i = 'j';
+    expect(a).toBe(1);
+  });
+
+  test('watch object deeply', () => {
+    observe(obj);
+    watch(obj, null, handler, { deep: true });
+    obj.a.b.c = 'd';
+    expect(a).toBe(1);
+  });
+
   test('watch unobserved object', () => {
     watch(obj, 'a.b.c', handler);
     obj.a.b.c = 'd';
     expect(a).toBe(0);
-  });
-
-  test('watch a property not existed', () => {
-    observe(obj);
-    watch(obj, 'a.b.d', handler);
-    const key = composeObserverKey(getObserverKey(obj.a.b), 'b');
-    expect(eventHub.hub[key]).not.toBeDefined();
   });
 
   test('watch an unexpected path', () => {

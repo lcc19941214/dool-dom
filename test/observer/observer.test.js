@@ -1,4 +1,5 @@
-import observe from '@/observer';
+import observe, { watch } from '@/observer';
+import _ from '@/utils';
 import { INTERNAL_FLAG } from '@/observer/observer';
 
 const getFoo = () => ({ name: 'bar', age: 25 });
@@ -29,23 +30,27 @@ function getNestedObservedObject() {
 
 function getObservedObjectWithWatcher(watcher) {
   const foo = getFoo();
-  const observedFoo = observe(foo, watcher);
+  const observedFoo = observe(foo);
+  watch(observedFoo, null, watcher, { deep: true });
   return { foo, observedFoo };
 }
 
 function getObservedArray(watcher) {
-  const foo = [1, getFoo(), true, [getNestedFoo(), getFoo()]];
-  const observedFoo = observe(foo, watcher);
-  return { foo, observedFoo };
+  const bar = {
+    foo: [1, getFoo(), true, [getNestedFoo(), getFoo()]]
+  };
+  const observedBar = observe(bar);
+  watch(observedBar, null, watcher, { deep: true });
+  return { foo: bar.foo, observedFoo: observedBar.foo };
 }
 
-describe('observe', () => {
-  test('observe value which not an object', () => {
+describe('observe unobservable value', () => {
+  test('value should be return equally', () => {
     expect(observe('1')).toBe('1');
   });
 });
 
-describe('observe an object', () => {
+describe('observe object', () => {
   let foo;
   let observedFoo;
 
@@ -63,6 +68,24 @@ describe('observe an object', () => {
     observedFoo.name = 'foo';
     expect(observedFoo.name).toBe('foo');
   });
+
+  test('existed getter or setter should be fired', () => {
+    let a = 1;
+
+    foo = {};
+    _.def(foo, 'bar', {
+      enumerable: true,
+      configurable: true,
+      get: () => a,
+      set: newVal => (a = newVal)
+    });
+
+    observe(foo);
+    expect(foo.bar).toBe(1);
+
+    foo.bar = 2;
+    expect(a).toBe(2);
+  });
 });
 
 describe('observe an nested object', () => {
@@ -72,7 +95,7 @@ describe('observe an nested object', () => {
   });
 });
 
-describe('watcher', () => {
+describe('observer target', () => {
   let a;
   let handler;
 
@@ -81,15 +104,16 @@ describe('watcher', () => {
     handler = () => a++;
   });
 
-  test('watch object value change', () => {
+  test('watch object value change should work', () => {
     const { observedFoo } = getObservedObjectWithWatcher(handler);
     observedFoo.name = 'Bob';
     observedFoo.age = 10;
     expect(a).toBe(2);
   });
 
-  test('watch nested object value change', () => {
-    const bar = observe({ a: { b: { c: 'd' } } }, handler);
+  test('watch nested object value change should work', () => {
+    const bar = observe({ a: { b: { c: 'd' } } });
+    watch(bar, null, handler, { deep: true });
     bar.a.b.c = 'e';
     expect(a).toBe(1);
   });

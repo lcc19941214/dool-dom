@@ -1,24 +1,35 @@
 import _ from '@/utils';
-import { isObserver, composeObserverKey, getObserverKey, eventHub } from './observer';
+import { Observer, pushTarget, popTarget } from './observer';
 import { toPath } from 'lodash';
 
 /**
  *
- * @param {*} object
- * @param {string} path path can be any format only if lodash.get supports
- * @param {function} handler
+ * @param {*} obj
+ * @param {string|null} path @see `lodash.get`
+ * @param {function} watcher
+ * @param {object} options
  */
-export default function watch(object, path, handler) {
-  const $path = toPath(path);
-  const len = $path.length;
-  if (len > 1) {
-    const higherPath = $path.slice(0, -1);
-    const target = _.get(object, higherPath);
-    const propName = $path[len - 1];
+export default function watch(obj, path, watcher, options = {}) {
+  if (!Observer.isObserver(obj)) return;
 
-    if (isObserver(target) && propName in target) {
-      const key = composeObserverKey(getObserverKey(target), propName);
-      eventHub.on(key, handler);
-    }
+  const { deep = false } = options;
+  
+  pushTarget(watcher);
+
+  const target = path ? _.get(obj, toPath(path)) : obj;
+  if (deep) {
+    traverse(target);
+  }
+
+  popTarget();
+}
+
+function traverse(obj) {
+  if (!Observer.isObserver(obj)) return;
+
+  if (_.isArray(obj)) {
+    obj.forEach(v => traverse(v));
+  } else {
+    Object.keys(obj).forEach(key => traverse(obj[key]));
   }
 }

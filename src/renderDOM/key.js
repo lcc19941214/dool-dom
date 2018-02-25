@@ -15,7 +15,7 @@ export const getKeyOfNode = node => node && node[KEY];
 
 export const setKeyForNode = (node, key) => {
   if (checkKey(key)) {
-    Object.defineProperty(node, KEY, {
+    _.def(node, KEY, {
       value: key.toString()
     });
   }
@@ -58,7 +58,7 @@ export const checkAndAssignChildrenKey = (children, ...prefix) => {
 };
 
 /**
- * deeply iterate given root and print key of all elements
+ * deeply traverse given root and print key of all elements
  */
 export const getElementKeyTree = (root, log = true) => {
   if (_DEV_) {
@@ -86,7 +86,7 @@ export const getElementKeyTree = (root, log = true) => {
 };
 
 /**
- * deeply iterate given root and print key of all DOM Element
+ * deeply traverse given root and print key of all DOM Element
  */
 export const getDOMElementKeyTree = (root, log = true) => {
   if (_DEV_) {
