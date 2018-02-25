@@ -12,14 +12,6 @@ describe('EventHub', () => {
     handler = () => a++;
   });
 
-  test('emit unregistered event would throw warning', () => {
-    const hub = new EventHub({ allowUnregistered: false });
-    const foo = () => {
-      hub.emit('test');
-    };
-    expect(foo).toConsoleWarn();
-  });
-
   test('registered event should be fired', () => {
     hub.on('a', handler);
     hub.on('a', handler);
@@ -58,5 +50,19 @@ describe('EventHub', () => {
       hub.emit('a');
     };
     expect(tryWatchUndefined).not.toThrow();
+  });
+
+  test('emitAll and clearAll method should work', () => {
+    let b;
+
+    hub.on('a', handler);
+    hub.on('b', handler);
+    hub.emitAll();
+
+    b = a;
+    hub.clearAll();
+    hub.emitAll();
+
+    expect(a).toBe(b);
   });
 });
