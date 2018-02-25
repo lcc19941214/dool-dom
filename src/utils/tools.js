@@ -1,5 +1,5 @@
 import typeCheck from './typeCheck';
-import _ from 'lodash';
+import lodash from 'lodash';
 
 const tools = {
   createFrozenObject: val => {
@@ -58,11 +58,9 @@ const tools = {
       .slice(2);
   },
 
-  set: (...args) => _.set(...args),
+  set: (...args) => lodash.set(...args),
 
-  get: (...args) => _.get(...args)
+  get: (...args) => lodash.get(...args)
 };
-
-window.flatten = tools.flatten;
 
 export default tools;
